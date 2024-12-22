@@ -1,0 +1,67 @@
+@page "/Books"
+@inject IRepository Repository
+
+
+<h1>Library CRUD with Blazor server & MSSQLLocalDB</h1>
+<h3 class="text-center">Follow me on my social media <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Here!</a></h3>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-dark">Books List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Price</th>
+                <th>Creation Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in _booksList)
+                {
+                    <tr>
+                        <td>@book.Id</td>
+                        <td>@book.Title</td>
+                        <td>@book.Description</td>
+                        <td>@book.Author</td>
+                        <td>@book.Pages</td>
+                        <td>@book.Price</td>
+                        <td>@book.CreatedAt</td>
+                        <td>
+                            <a href="update-book/@book.Id" class="btn btn-success btn-sm">
+                                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true">Edit</span>
+                            </a>
+                            <button @onclick="@(() => _deleteBook(book.Id))" class="btn btn-danger btn-sm" >
+                                <span class="io oi-list-rich">Remove</span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    private List<Book> _booksList = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _booksList = await Repository.GetBooks();
+    }
+    
+    // Delete book method
+    private async Task _deleteBook(int bookId)
+    {
+        
+    }
+}

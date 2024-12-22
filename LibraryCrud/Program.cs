@@ -1,5 +1,6 @@
 using LibraryCrud.Components;
 using LibraryCrud.Data;
+using LibraryCrud.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Add Repository as Dependency Injection
+builder.Services.AddScoped<IRepository, Repository>();
 
 var app = builder.Build();
 

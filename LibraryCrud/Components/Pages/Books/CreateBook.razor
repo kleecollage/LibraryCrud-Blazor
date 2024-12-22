@@ -1,0 +1,107 @@
+@page "/create-book"
+@inject IRepository Repository
+@inject NavigationManager navigationManager
+
+
+<h1>Library CRUD with Blazor server & MSSQLLocalDB</h1>
+<h3 class="text-center">Follow me on my social media <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Here!</a></h3>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-dark">Register New Book</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <EditForm Model="_bookModel" OnValidSubmit="@(() => HandlerOnCreateBook())">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <div class="container">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Title:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="_bookModel.Title" class="form-control" placeholder="Enter the book title" />
+                            <ValidationMessage For="() => _bookModel.Title"></ValidationMessage>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Description:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="_bookModel.Description" class="form-control" placeholder="Enter the book description" />
+                            <ValidationMessage For="() => _bookModel.Description"></ValidationMessage>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Author:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputText @bind-Value="_bookModel.Author" class="form-control" placeholder="Enter the book author" />
+                            <ValidationMessage For="() => _bookModel.Author"></ValidationMessage>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Pages:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputNumber @bind-Value="_bookModel.Pages" class="form-control" placeholder="Enter the number of pages in the book" />
+                            <ValidationMessage For="() => _bookModel.Pages"></ValidationMessage>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <label>Price:</label>
+                        </div>
+                        <div class="col-6">
+                            <InputNumber @bind-Value="_bookModel.Price" class="form-control" placeholder="Enter the book price" />
+                            <ValidationMessage For="() => _bookModel.Price"></ValidationMessage>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-success">
+                                <span class="oi oi-cog" aria-hidden="true"> Submit</span>
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-primary" @onclick="@(() => navigationManager.NavigateTo("books"))">
+                                <span class="oi oi-cog" aria-hidden="true"> Go Back</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+@code {
+    private Book _bookModel = new();
+    
+    // Methos to register a new book
+    private async Task HandlerOnCreateBook()
+    {
+        var createBook = await Repository.CreateBook(_bookModel);
+        navigationManager.NavigateTo("/books");
+    }
+}
