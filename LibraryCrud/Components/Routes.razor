@@ -1,6 +1,15 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
+﻿@using LibraryCrud.Components.Layout
+@using LibraryCrud.Components.Pages
+
+<Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)"/>
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
         <FocusOnNavigate RouteData="routeData" Selector="h1"/>
     </Found>
+    <NotFound>
+        <PageTitle>Not Found</PageTitle>
+        <LayoutView Layout="@typeof(NotFoundLayout)">
+            <NotFound />
+        </LayoutView>
+    </NotFound>
 </Router>

@@ -38,7 +38,7 @@
                         <td>@book.Price</td>
                         <td>@book.CreatedAt</td>
                         <td>
-                            <a href="update-book/@book.Id" class="btn btn-success btn-sm">
+                            <a href="edit-book/@book.Id" class="btn btn-success btn-sm">
                                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true">Edit</span>
                             </a>
                             <button @onclick="@(() => _deleteBook(book.Id))" class="btn btn-danger btn-sm" >
@@ -62,6 +62,8 @@
     // Delete book method
     private async Task _deleteBook(int bookId)
     {
-        
+        await Repository.DeleteBook(bookId);
+        // Update List
+        _booksList = await Repository.GetBooks();
     }
 }

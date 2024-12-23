@@ -1,4 +1,4 @@
-@page "/create-book"
+@page "/edit-book/{id:int}"
 @inject IRepository Repository
 @inject NavigationManager navigationManager
 
@@ -8,12 +8,12 @@
     <div class="card-header">
         <div class="row">
             <div class="col-12">
-                <h2 class="text-dark">Register New Book</h2>
+                <h2 class="text-dark">Update Book</h2>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <EditForm Model="_bookModel" OnValidSubmit="@(() => HandlerOnCreateBook())">
+        <EditForm Model="_bookModel" OnValidSubmit="@(() => OnHandlerCreateBook())">
             <DataAnnotationsValidator></DataAnnotationsValidator>
             <div class="container">
                 <div class="form-group">
@@ -78,14 +78,14 @@
                 <br />
                 <div class="form-group">
                     <div class="row">
+                        <div class="col-6">
+                            <button class="btn btn-secondary" @onclick="@(() => navigationManager.NavigateTo("books"))">
+                                <span class="oi oi-cog" aria-hidden="true"> Go Back</span>
+                            </button>
+                        </div>
                         <div class="col-2">
                             <button type="submit" class="btn btn-success">
                                 <span class="oi oi-cog" aria-hidden="true"> Submit</span>
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-primary" @onclick="@(() => navigationManager.NavigateTo("books"))">
-                                <span class="oi oi-cog" aria-hidden="true"> Go Back</span>
                             </button>
                         </div>
                     </div>
@@ -95,12 +95,19 @@
     </div>
 </div>
 @code {
+    [Parameter] public int? Id { get; set; }
+    
     private Book _bookModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bookModel = await Repository.GetBookId(Id.Value);
+    }
     
     // Methos to register a new book
-    private async Task HandlerOnCreateBook()
+    private async Task OnHandlerCreateBook()
     {
-        var createBook = await Repository.CreateBook(_bookModel);
+        var createBook = await Repository.UpdateBook(Id.Value ,_bookModel);
         navigationManager.NavigateTo("/books");
     }
 }
