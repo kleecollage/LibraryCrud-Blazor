@@ -2,6 +2,7 @@ using LibraryCrud.Components;
 using LibraryCrud.Data;
 using LibraryCrud.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
-// Add Repository as Dependency Injection
+// MY SERVICES
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddRadzenComponents();
 
 var app = builder.Build();
 
