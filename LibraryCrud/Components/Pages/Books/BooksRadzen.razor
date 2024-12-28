@@ -1,20 +1,37 @@
 @page "/books-radzen"
+
 @inject IRepository Repository
-
-
-
-<RadzenButton Click="@ButtonClicked" Text="Hi"></RadzenButton>
-@code {
-    void ButtonClicked()
-    {
-        // Handle the Click event of RadzenButton
-    }
-}
-
 
 <h1>Library CRUD with Blazor server & MSSQLLocalDB</h1>
 <h3 class="text-center">Follow me on my social media <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Here!</a></h3>
-<div class="card">
+
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false"
+                FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true"
+                PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@_booksList" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+                SelectionMode="DataGridSelectionMode.Single" TItem="@Book">
+    <Columns>
+        <RadzenDataGridColumn TItem="Book" Property="Id" Filterable="false" Title="ID" Frozen="true" Width="10px" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Book" Property="Title" Title="Title" Frozen="true" Width="160px" />
+        <RadzenDataGridColumn TItem="Book" Property="Description" Title="Description" Width="160px"/>
+        <RadzenDataGridColumn TItem="Book" Property="Author" Title="Author" Width="200px" />
+        <RadzenDataGridColumn TItem="Book" Property="Pages" Title="Pages" Width="120px" />
+        <RadzenDataGridColumn TItem="Book" Property="Price" Title="Price" FormatString="{0:C}" Width="160px" />
+        <RadzenDataGridColumn TItem="Book" Property="CreatedAt" Title="CreatedAt" FormatString="{0:MM/dd/yyyy}" Width="160px" />
+        <RadzenDataGridColumn Title="Actions" Property="Id">
+            <Template Context="data">
+                <a href="edit-book/@data.Id" class="btn btn-success btn-sm">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true">Edit</span>
+                </a>
+                <button @onclick="@(() => _deleteBook(data.Id))" class="btn btn-danger btn-sm" >
+                    <span class="io oi-list-rich">Remove</span>
+                </button>
+            </Template>
+        </RadzenDataGridColumn> 
+    </Columns>
+</RadzenDataGrid>
+
+@*<div class="card">
     <div class="card-header">
         <div class="row">
             <div class="col-12">
@@ -60,7 +77,8 @@
             </tbody>
         </table>
     </div>
-</div>
+</div>*@
+
 @code {
     private List<Book> _booksList = [];
 
